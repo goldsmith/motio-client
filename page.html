@@ -1,39 +1,45 @@
 <!DOCTYPE HTML>
 <html>                                                                           
 <head>                                                                           
-    <title>Motio</title>                                                   
+    <title>Motio</title> 
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">      
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" charset="utf-8">                              
-        $(document).ready(function(){                                            
-            if ("WebSocket" in window) {                                         
-                ws = new WebSocket("ws://" + document.domain + ":5000/gesture");                
-                ws.onmessage = function (msg) {                                  
-                    parse(msg.data);
-                };                                                               
-            } else {                                                             
-                alert("WebSocket not supported");                                
-            }                                                                    
-        });   
+    <script type="text/javascript" charset="utf-8">   
+    $(document).ready(function(){                                            
+        if ("WebSocket" in window) {                                         
+            ws = new WebSocket("ws://" + document.domain + ":5000/gesture");                
+            ws.onmessage = function (msg) {                                  
+                parse(msg.data);
+            };                                                               
+        } else {                                                             
+            alert("WebSocket not supported");                                
+        }                                                                    
+    });   
 
-        function parse(data) {
-        	if (data.action === 'add_gesture') {
-        		add_gesture(data.name)
-        	}
-        }    
+    function parse(data) {
+     if (data.action === 'add_gesture') {
+      add_gesture(data.name)
+  }
+}    
 
-        function add_gesture(name) {
+function add_gesture(name) {
         	//
         	// $.post("localhost:5000/add_gesture_file_path")
+            var table=document.getElementById("myTable");
+            var row=table.insertRow(-1);
+            var cell1=row.insertCell(0);
+            var cell2=row.insertCell(1);
+            cell1.innerHTML=name;
+            cell2.innerHTML="<input type='password'>";
         }                                                               
-    </script>                                                                    
-</head>                                                                          
-<body>                                                                           
-    <h1>Send:</h1>                                                               
-    <form method='POST' action='#'>                                              
-        <textarea name='data' id="data"></textarea>                              
-        <div><input type='submit'></div>                                         
-    </form>                                                                      
-    <h1>Receive:</h1>                                                            
-    <div id="log"></div>                                                         
-</body>                                                                          
-</html>      
+        </script>                                                                    
+    </head>                                                                          
+    <body>                                                                           
+        <table class="table table-bordered table-striped" id="myTable">
+            <tr>
+                <th>Name</th>
+                <th>Script</th>
+            </tr>
+        </table>                                                      
+    </body>                                                                          
+    </html>      
