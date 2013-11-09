@@ -5,32 +5,29 @@ from Tkinter import *
 app = Flask(__name__)
 sockets = Sockets(app)
 
-@sockets.route('/command')
-def echo_socket(ws):
+gestures = {}
+
+@sockets.route('/get_all_gestures')
+def set_gestures(ws):
+	while True:
+		names = ws.receive()
+		for name in names:
+			gestures[name] = ''
+
+@sockets.route('/add_gesture')
+def add_gesture(ws):
+	while True:
+		name = ws.receive()
+		gestures[name] = ''
+
+@sockets.route('/do_gesture')
+def do_gesture(ws):
     while True:
-        message = ws.receive()
-        do_command(message)
-
-def do_command(command):
-	"""
-	Execute a command recieved from the server (should be a dictionary)
-
-	command = {
-		"command": <command>
-	}
-
-	<command> should be one of (so far):
-	(
-		"volume up",
-		"volume down",
-		"volume mute"
-	)
-
-	Hint: look into system commands
-
-	"""
-
-	pass
+        name = ws.receive()
+        program = gestures[name]
+        run(program)
 
 if __name__ == '__main__':
+	start_gui()
+	connect_to_server()
     app.run()
