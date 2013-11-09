@@ -17,12 +17,10 @@
     });   
 
     function parse(data) {
-     if (data.action === 'add_gesture') {
-      add_gesture(data.name)
-  }
-}    
-
-function add_gesture(name) {
+        if (data.action === 'add_gesture')
+            add_gesture(data.name)
+  }    
+  function add_gesture(name) {
         	//
         	// $.post("localhost:5000/add_gesture_file_path")
             var table=document.getElementById("myTable");
@@ -30,8 +28,13 @@ function add_gesture(name) {
             var cell1=row.insertCell(0);
             var cell2=row.insertCell(1);
             cell1.innerHTML=name;
-            cell2.innerHTML="<input type='password'>";
-        }                                                               
+            cell2.innerHTML="<form onsubmit='pushscript(this)' name="+name+"><input type='text'><input type='submit' class='btn' value='Save'></form>";
+        }    
+    function pushscript(element){
+        var script = element.firstChild.value
+        var name = element.name
+        $.post("/add_gesture_filepath", {name:name, path:script})
+    }                                                           
         </script>                                                                    
     </head>                                                                          
     <body>                                                                           
