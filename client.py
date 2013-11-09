@@ -1,4 +1,5 @@
 import multiprocessing
+import subprocess
 
 from flask import Flask, render_template, request
 from flask_sockets import Sockets
@@ -15,6 +16,7 @@ web_socket = None
 
 def run(name):
 	path = gestures[name]
+	subprocess.call(path, shell=True)
 	# do something with path
 
 @app.route("/")
