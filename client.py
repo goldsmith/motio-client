@@ -30,3 +30,6 @@ def do_command(command):
 	"""
 
 	pass
+
+if __name__ == '__main__':
+    app.run()
