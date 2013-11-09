@@ -1,32 +1,20 @@
-import Tkinter
+import multiprocessing
+
 from flask import Flask, render_template, request
 from flask_sockets import Sockets
-from Tkinter import *
+
+from websocket import create_connection
+
+from client import pipe
 
 app = Flask(__name__)
 sockets = Sockets(app)
 
 gestures = {}
 
-# @sockets.route('/get_all_gestures')
-# def set_gestures(ws):
-# 	while True:
-# 		names = ws.receive()
-# 		for name in names:
-# 			gestures[name] = ''
-
-# @sockets.route('/add_gesture')
-# def add_gesture(ws):
-# 	while True:
-# 		name = ws.receive()
-# 		gestures[name] = ''
-
-# @sockets.route('/do_gesture')
-# def do_gesture(ws):
-#     while True:
-#         name = ws.receive()
-#         program = gestures[name]
-#         run(program)
+def run(name):
+	path = gestures[name]
+	# do something with path
 
 @app.route("/"):
 def index():
@@ -40,14 +28,20 @@ def add_gesture_filepath():
 	pass
 
 def get_from_server():
+	ws = create_connection("ws://motio.herokuapp.com/client_socket")
 	while True:
-		yield
+		data = ws.recv()
+		if data["action"] == "add_gesture":
+
+web_view = pipe()
 
 @sockets.route('/gesture')
 def echo_socket(ws):
-    while True:
-        message = get_from_server()
-        ws.send(message)
+    for message in web_view:
+    	if message['action'] == "do_gesture":
+    		run(message['name'])
+    	else:
+        	ws.send(message)
 
 if __name__ == '__main__':
 	# start_gui()
