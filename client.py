@@ -1,5 +1,5 @@
 import Tkinter
-from flask import Flask
+from flask import Flask, render_template, request
 from flask_sockets import Sockets
 from Tkinter import *
 
@@ -28,16 +28,28 @@ gestures = {}
 #         program = gestures[name]
 #         run(program)
 
-def start_gui():
-	master = Tk()
-	listbox = Listbox(master)
-	listbox.pack()   
-	listbox.insert(END, "a list entry")
-	for item in ["one", "two", "three", "four"]:
-   	 	listbox.insert(END, item)
-	mainloop()
+@app.route("/"):
+def index():
+	return render_template('page.html')
+
+@app.route("/add_gesture_filepath")
+def add_gesture_filepath():
+	# name = request.data['name']
+	# path = request.data['path'] 
+	# gestures[name] = path
+	pass
+
+def get_from_server():
+	while True:
+		yield
+
+@sockets.route('/gesture')
+def echo_socket(ws):
+    while True:
+        message = get_from_server()
+        ws.send(message)
 
 if __name__ == '__main__':
-	start_gui()
+	# start_gui()
 	# connect_to_server()
-    # app.run()
+    app.run()
