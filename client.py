@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sockets import Sockets
+from Tkinter import *
 
 app = Flask(__name__)
 sockets = Sockets(app)
