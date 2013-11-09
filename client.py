@@ -25,10 +25,12 @@ def index():
 
 @app.route("/add_gesture_filepath")
 def add_gesture_filepath():
-	# name = request.data['name']
-	# path = request.data['path'] 
-	# gestures[name] = path
-	pass
+	name = request.form['name']
+	path = request.form['path'] 
+	gestures[name] = path
+
+	print "name", name
+	print "path", path
 
 def get_from_server():
 	# ws = create_connection("ws://localhost:8000/client_socket")
