@@ -12,25 +12,9 @@ sockets = Sockets(app)
 
 gestures = {}
 
-# @sockets.route('/get_all_gestures')
-# def set_gestures(ws):
-# 	while True:
-# 		names = ws.receive()
-# 		for name in names:
-# 			gestures[name] = ''
-
-# @sockets.route('/add_gesture')
-# def add_gesture(ws):
-# 	while True:
-# 		name = ws.receive()
-# 		gestures[name] = ''
-
-# @sockets.route('/do_gesture')
-# def do_gesture(ws):
-#     while True:
-#         name = ws.receive()
-#         program = gestures[name]
-#         run(program)
+def run(name):
+	path = gestures[name]
+	# do something with path
 
 @app.route("/"):
 def index():
@@ -54,7 +38,10 @@ web_view = pipe()
 @sockets.route('/gesture')
 def echo_socket(ws):
     for message in web_view:
-        ws.send(message)
+    	if message['action'] == "do_gesture":
+    		run(message['name'])
+    	else:
+        	ws.send(message)
 
 if __name__ == '__main__':
 	# start_gui()
